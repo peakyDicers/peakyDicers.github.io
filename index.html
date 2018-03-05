@@ -30,6 +30,7 @@
       if (user) {
         userID = user.uid;
         console.log('userID: ', userID)
+        loadOnce();
       }
     });
 
@@ -59,9 +60,17 @@
         })
     }
 
-
+  </script>
+  <script type="text/javascript">
+    var host = "peakydicers.com";
+    if ((host == window.location.host) && window.location.protocol != "https:")
+      window.location.protocol = "https";
+  </script>
+  <script>
     var theMessages = firebase.database().ref('users/');
-    theMessages.on('value', function (snapshot) {
+
+    function loadOnce(){
+      theMessages.on('value', function (snapshot) {
       var listNode = document.getElementById("list");
       while (listNode.hasChildNodes()) {
         listNode.removeChild(listNode.lastChild);
@@ -86,11 +95,7 @@
       }
       // updateStarCount(postElement, snapshot.val());
     });
-  </script>
-  <script type="text/javascript">
-    var host = "peakydicers.com";
-    if ((host == window.location.host) && window.location.protocol != "https:")
-      window.location.protocol = "https";
+    }
   </script>
   <style type="text/css">
     body {
