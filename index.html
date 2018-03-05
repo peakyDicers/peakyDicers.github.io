@@ -3,27 +3,130 @@
 <title> peakyDicers </title>
 
 <head>
-    <script type="text/javascript">
-        var host = "peakydicers.com";
-        if ((host == window.location.host) && window.location.protocol != "https:"))
-        window.location.protocol = "https";
-    </script>
-    <style type="text/css">body{margin:40px
-      auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
-      10px;background-color: #EEEEEE}h1,h2,h3{line-height:1.2}</style>
+  <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDXvlHh-ZUsh77fT4IdbVSCv8jL9iwvhSk",
+      authDomain: "peaky-website.firebaseapp.com",
+      databaseURL: "https://peaky-website.firebaseio.com",
+      projectId: "peaky-website",
+      storageBucket: "gs://peaky-website.appspot.com/",
+      messagingSenderId: "512676933345"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script>
+    var userID;
+    firebase.auth().signInAnonymously().catch(function (error) {
+
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        userID = user.uid;
+        console.log('userID: ', userID)
+      }
+    });
+
+    var database = firebase.database();
+    var storage = firebase.storage();
+    var ref = storage.ref();
+    var msgRef = ref.child('theMessages.txt');
+
+
+    function sendMsg() {
+      var oldMsg = "";
+      var msg = document.getElementById("inputField").value;
+      firebase.database().ref('users/' + userID).once('value')
+        .then(function (snapshot) {
+          if (snapshot.val() == null) {
+            firebase.database().ref('users/' + userID).set({
+              message: msg
+            })
+          } else {
+            oldMsg = snapshot.val().message;
+          }
+          msg = oldMsg + " | " + msg;
+
+          firebase.database().ref('users/' + userID).update({
+            message: msg
+          })
+        })
+    }
+
+
+    var theMessages = firebase.database().ref('users/');
+    theMessages.on('value', function (snapshot) {
+      var listNode = document.getElementById("list");
+      while (listNode.hasChildNodes()) {
+        listNode.removeChild(listNode.lastChild);
+      }
+      for (var key in snapshot.val()) {
+        // skip loop if the property is from prototype
+        if (!snapshot.val().hasOwnProperty(key)) continue;
+
+        var obj = snapshot.val()[key];
+        for (var prop in obj) {
+          // skip loop if the property is from prototype
+          if (!obj.hasOwnProperty(prop)) continue;
+
+          // your code
+          console.log(obj[prop]);
+          var node = document.createElement("p");
+          var textnode = document.createTextNode(obj[prop]);
+          node.appendChild(textnode);
+          document.getElementById("list").appendChild(node);
+          // alert(prop + " = " + obj[prop]);
+        }
+      }
+      // updateStarCount(postElement, snapshot.val());
+    });
+  </script>
+  <script type="text/javascript">
+    var host = "peakydicers.com";
+    if ((host == window.location.host) && window.location.protocol != "https:")
+      window.location.protocol = "https";
+  </script>
+  <style type="text/css">
+    body {
+      margin: 40px auto;
+      max-width: 650px;
+      line-height: 1.6;
+      font-size: 18px;
+      color: #444;
+      padding: 0 10px;
+      background-color: #EEEEEE
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.2
+    }
+  </style>
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="canonical" href="https://peakydicers.com"/>
+<link rel="canonical" href="https://peakydicers.com" />
+
 <body>
   <h1>Why, hello there. </h1>
-    <p>
-      My name is Ian and this is my website.
-    </p>
-    <a href="https://github.com/peakyDicers">github</a>
-    <a href="https://twitter.com/peakyDicers">twitter</a>
-    <a href="https://www.facebook.com/peakyDicers">facebook</a>
-    <a href="http://peakydicers.tumblr.com/">tumblr</a>
+  <p>
+    My name is Ian and this is my website.
+  </p>
+  <a href="https://github.com/peakyDicers">github</a>
+  <a href="https://twitter.com/peakyDicers">twitter</a>
+  <a href="https://www.facebook.com/peakyDicers">facebook</a>
+  <a href="http://peakydicers.tumblr.com/">tumblr</a>
+  <p> leave a message: </p>
+  <input type="text" id="inputField">
+  <button onclick="sendMsg()">enter</button>
+  <p id="list">ur msgs</p>
 </body>
 
 </html>
