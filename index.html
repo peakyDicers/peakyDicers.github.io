@@ -62,6 +62,8 @@
       console.log('lmao', mydate.getDate());
       console.log(str);
 
+      document.getElementById('inputField').value = '';
+
 
 
       var uniqueID = firebase.database().ref('messages').push();
