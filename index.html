@@ -43,21 +43,10 @@
     function sendMsg() {
       var oldMsg = "";
       var msg = document.getElementById("inputField").value;
-      firebase.database().ref('users/' + userID).once('value')
-        .then(function (snapshot) {
-          if (snapshot.val() == null) {
-            firebase.database().ref('users/' + userID).set({
-              message: msg
-            })
-          } else {
-            oldMsg = snapshot.val().message;
-          }
-          msg = oldMsg + " | " + msg;
 
-          firebase.database().ref('users/' + userID).update({
-            message: msg
-          })
-        })
+      var uniqueID = firebase.database().ref('messages').push();
+      uniqueID.set(msg);
+
     }
 
   </script>
@@ -67,7 +56,7 @@
       window.location.protocol = "https";
   </script>
   <script>
-    var theMessages = firebase.database().ref('users/');
+    var theMessages = firebase.database().ref('messages/');
 
     function loadOnce(){
       theMessages.on('value', function (snapshot) {
@@ -75,25 +64,22 @@
       while (listNode.hasChildNodes()) {
         listNode.removeChild(listNode.lastChild);
       }
+      console.log(snapshot.val());
+      var result = [];
       for (var key in snapshot.val()) {
         // skip loop if the property is from prototype
         if (!snapshot.val().hasOwnProperty(key)) continue;
-
         var obj = snapshot.val()[key];
-        for (var prop in obj) {
-          // skip loop if the property is from prototype
-          if (!obj.hasOwnProperty(prop)) continue;
-
-          // your code
-          console.log(obj[prop]);
-          var node = document.createElement("p");
-          var textnode = document.createTextNode(obj[prop]);
-          node.appendChild(textnode);
-          document.getElementById("list").appendChild(node);
-          // alert(prop + " = " + obj[prop]);
-        }
+        console.log(obj);
+        result.push(obj);
       }
-      // updateStarCount(postElement, snapshot.val());
+      result.reverse();
+      for (var i = 0; i < result.length; i++){
+        var node = document.createElement("p");
+        var textnode = document.createTextNode(result[i]);
+        node.appendChild(textnode);
+        document.getElementById("list").appendChild(node);
+      }
     });
     }
   </script>
