@@ -96,6 +96,8 @@
         }
         result.reverse();
         for (var i = 0; i < result.length; i++) {
+          var mainContainer = document.createElement('div');
+          mainContainer.classList.add('mainContainer');
           var node = document.createElement("p");
           var textnode = document.createTextNode(result[i].message);
           var textContainer = document.createElement('div');
@@ -103,7 +105,9 @@
           node.appendChild(textnode);
           textContainer.appendChild(textnode2)
           node.appendChild(textContainer);
-          document.getElementById("list").appendChild(node);
+          mainContainer.appendChild(node)
+          document.getElementById("list").appendChild(mainContainer);
+
         }
       });
     }
@@ -118,9 +122,9 @@
       padding: 0 10px;
       background-color: #EEEEEE
     }
-
-    ,
-    msg {}
+    .mainContainer {
+      background-color: rgb(221, 219, 219)
+    }
 
 
     h1,
