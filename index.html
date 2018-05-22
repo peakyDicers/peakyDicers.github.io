@@ -103,9 +103,13 @@
           var node = document.createElement("p");
           var textnode = document.createTextNode(result[i].message);
           var textContainer = document.createElement('div');
+          var dateContainer = document.createElement('div');
           var textnode2 = document.createTextNode(result[i].date);
+
+          dateContainer.classList.add('date');
+          dateContainer.appendChild(textnode2);
           node.appendChild(textnode);
-          textContainer.appendChild(textnode2)
+          textContainer.appendChild(dateContainer)
           node.appendChild(textContainer);
           mainContainer.appendChild(node)
           document.getElementById("list").appendChild(mainContainer);
@@ -125,7 +129,11 @@
       background-color: #EEEEEE
     }
     .mainContainer {
-      background-color: rgb(221, 219, 219)
+      background-color: rgb(221, 219, 219);
+      word-wrap: break-word;
+      padding-left: 10px;
+      padding-right: 10px;
+      border-radius: 2px;
     }
 
 
@@ -141,9 +149,9 @@
 <link rel="canonical" href="https://peakydicers.com" />
 
 <body>
-  <h1> Bad ideas </h1>
+  <h1> bad ideas </h1>
   <p>
-    my name is ian, welcome to my website
+    my name is ian and this is my website.
   </p>
   <a href="https://github.com/peakyDicers">github</a>
   <a href="https://twitter.com/peakyDicers">twitter</a>
