@@ -40,12 +40,33 @@
     var msgRef = ref.child('theMessages.txt');
 
 
+    function sendTime(date){
+      var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+    }
+
     function sendMsg() {
       var oldMsg = "";
       var msg = document.getElementById("inputField").value;
+      var mydate = new Date();
+      var month = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"][mydate.getMonth()];
+      var str = month + ' ' + mydate.getDay() + ', ' + mydate.getFullYear() + ' ' + sendTime(mydate);
+      console.log(str);
+
+
 
       var uniqueID = firebase.database().ref('messages').push();
-      uniqueID.set(msg);
+      uniqueID.set({
+        message: msg,
+        date: str
+      });
 
     }
 
@@ -58,29 +79,33 @@
   <script>
     var theMessages = firebase.database().ref('messages/');
 
-    function loadOnce(){
+    function loadOnce() {
       theMessages.on('value', function (snapshot) {
-      var listNode = document.getElementById("list");
-      while (listNode.hasChildNodes()) {
-        listNode.removeChild(listNode.lastChild);
-      }
-      console.log(snapshot.val());
-      var result = [];
-      for (var key in snapshot.val()) {
-        // skip loop if the property is from prototype
-        if (!snapshot.val().hasOwnProperty(key)) continue;
-        var obj = snapshot.val()[key];
-        console.log(obj);
-        result.push(obj);
-      }
-      result.reverse();
-      for (var i = 0; i < result.length; i++){
-        var node = document.createElement("p");
-        var textnode = document.createTextNode(result[i]);
-        node.appendChild(textnode);
-        document.getElementById("list").appendChild(node);
-      }
-    });
+        var listNode = document.getElementById("list");
+        while (listNode.hasChildNodes()) {
+          listNode.removeChild(listNode.lastChild);
+        }
+        console.log(snapshot.val());
+        var result = [];
+        for (var key in snapshot.val()) {
+          // skip loop if the property is from prototype
+          if (!snapshot.val().hasOwnProperty(key)) continue;
+          var obj = snapshot.val()[key];
+          console.log(obj);
+          result.push(obj);
+        }
+        result.reverse();
+        for (var i = 0; i < result.length; i++) {
+          var node = document.createElement("p");
+          var textnode = document.createTextNode(result[i].message);
+          var textContainer = document.createElement('div');
+          var textnode2 = document.createTextNode(result[i].date);
+          node.appendChild(textnode);
+          textContainer.appendChild(textnode2)
+          node.appendChild(textContainer);
+          document.getElementById("list").appendChild(node);
+        }
+      });
     }
   </script>
   <style type="text/css">
@@ -94,6 +119,10 @@
       background-color: #EEEEEE
     }
 
+    ,
+    msg {}
+
+
     h1,
     h2,
     h3 {
@@ -106,9 +135,9 @@
 <link rel="canonical" href="https://peakydicers.com" />
 
 <body>
-  <h1>Why, hello there. </h1>
+  <h1> Bad ideas </h1>
   <p>
-    My name is Ian and this is my website.
+    my name is ian, welcome to my website
   </p>
   <a href="https://github.com/peakyDicers">github</a>
   <a href="https://twitter.com/peakyDicers">twitter</a>
