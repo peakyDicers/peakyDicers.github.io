@@ -3,6 +3,8 @@
 <title> peakyDicers </title>
 
 <head>
+  <script src="./sketch.js"></script>
+
   <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
   <script>
     // Initialize Firebase
@@ -40,15 +42,15 @@
     var msgRef = ref.child('theMessages.txt');
 
 
-    function sendTime(date){
+    function sendTime(date) {
       var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
-  return strTime;
+      var minutes = date.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
     }
 
     function sendMsg() {
@@ -57,7 +59,7 @@
       var mydate = new Date();
       var month = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"][mydate.getMonth()];
-      
+
       var str = month + ' ' + mydate.getDate() + ', ' + mydate.getFullYear() + ' ' + sendTime(mydate);
       console.log('lmao', mydate.getDate());
       console.log(str);
@@ -118,31 +120,49 @@
 
         }
       });
+
+      var x = document.getElementById("myAudio");
+      x.volume = 0.3;
+
     }
   </script>
   <style type="text/css">
-    body {
+    .main {
       margin: 40px auto;
       max-width: 650px;
       line-height: 1.6;
       font-size: 18px;
       color: #444;
       padding: 0 10px;
-      background-color: #EEEEEE
+      background-color: rgba(238, 238, 238, .6);
+      border-radius: 10;
     }
+
     .mainContainer {
-      background-color: rgb(221, 219, 219);
+      color: #444;
+      background-color: rgba(221, 219, 219, .6);
       word-wrap: break-word;
       padding-left: 10px;
       padding-right: 10px;
       border-radius: 2px;
     }
 
+    #sketch-holder {
+      z-index: -1;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
 
     h1,
     h2,
     h3 {
       line-height: 1.2
+    }
+
+    h1 {
+      justify-content: center;
+      align-self: center;
     }
   </style>
 </head>
@@ -151,18 +171,36 @@
 <link rel="canonical" href="https://peakydicers.com" />
 
 <body>
-  <h1> bad ideas </h1>
-  <p>
-    my name is ian and this is my website.
-  </p>
-  <a href="https://github.com/peakyDicers">github</a>
-  <a href="https://twitter.com/peakyDicers">twitter</a>
-  <a href="https://www.facebook.com/peakyDicers">facebook</a>
-  <a href="http://peakydicers.tumblr.com/">tumblr</a>
-  <p> leave a message: </p>
-  <input type="text" id="inputField">
-  <button onclick="sendMsg()">enter</button>
-  <p id="list">ur msgs</p>
+  <div id="sketch-holder">
+
+  </div>
+  <div class="main">
+    <script src="./Star.js"></script>
+    <script src="./p5.min.js"></script>
+    <h1>peaky dicers</h1>
+    <p>
+      hello, my name is ian and this is my website.
+    </p>
+    <a href="https://github.com/peakyDicers">github</a>
+    <a href="https://twitter.com/peakyDicers">twitter</a>
+    <a href="https://www.facebook.com/peakyDicers">facebook</a>
+    <a href="http://peakydicers.tumblr.com/">tumblr</a>
+
+    <div style="display: table-row">
+      <div style="display: table-cell">
+        <p> leave a message: </p>
+      </div>
+      <div style="display: table-cell">
+        <input type="text" id="inputField">
+        <button onclick="sendMsg()">enter</button>
+      </div>
+
+    </div>
+    <p id="list"></p>
+  </div>
+  <audio loop autoplay id="myAudio">
+    <source src="./song.mp3" type="audio/mp3"> Your browser does not support the audio element.
+  </audio>
 </body>
 
 </html>
