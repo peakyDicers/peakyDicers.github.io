@@ -31,7 +31,6 @@
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         userID = user.uid;
-        console.log('userID: ', userID)
         loadOnce();
       }
     });
@@ -61,12 +60,8 @@
         "July", "August", "September", "October", "November", "December"][mydate.getMonth()];
 
       var str = month + ' ' + mydate.getDate() + ', ' + mydate.getFullYear() + ' ' + sendTime(mydate);
-      console.log('lmao', mydate.getDate());
-      console.log(str);
 
       document.getElementById('inputField').value = '';
-
-
 
       var uniqueID = firebase.database().ref('messages').push();
       uniqueID.set({
@@ -91,13 +86,11 @@
         while (listNode.hasChildNodes()) {
           listNode.removeChild(listNode.lastChild);
         }
-        console.log(snapshot.val());
         var result = [];
         for (var key in snapshot.val()) {
           // skip loop if the property is from prototype
           if (!snapshot.val().hasOwnProperty(key)) continue;
           var obj = snapshot.val()[key];
-          console.log(obj);
           result.push(obj);
         }
         result.reverse();
@@ -127,6 +120,7 @@
     }
   </script>
   <style type="text/css">
+    body, html { overflow: hidden;}
     .main {
       margin: 40px auto;
       max-width: 650px;
@@ -136,6 +130,9 @@
       padding: 0 10px;
       background-color: rgba(238, 238, 238, .6);
       border-radius: 10;
+      overflow-y: auto;
+      max-height: 75vh;
+      display: block
     }
 
     .mainContainer {

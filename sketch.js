@@ -21,11 +21,24 @@ let center = {
     y: canvas.height/2
 };
 
+function windowResized() {
+    canvas = {
+        width: window.innerWidth,
+        height: window.innerHeight
+    }
+    center = {
+        x: canvas.width/2,
+        y: canvas.height/2
+    };
+    resizeCanvas(canvas.width, canvas.height);
+  }
+
 function setup() {
     background(51);
     var sketch = createCanvas(canvas.width, canvas.height);
     //sketch.position(0,0);
     sketch.parent('sketch-holder');
+    //sketch.style('display', 'block');
     translate(canvas.width/2, canvas.height/2);
     center.x = canvas.width/2;
     center.y = canvas.height/2;
@@ -36,7 +49,6 @@ function setup() {
         let z = maxDistance;
         stars.push(new Star(x, y, z, 3, 3));
     }
-    console.log(stars);
   }
 
 function draw(){
@@ -58,12 +70,6 @@ function draw(){
     counter++;
     if (counter == 4) counter = 0;
    
-    
-   
-
-    console.log(r,g,b);
-       
-
     background(r,g,b);
     for (let i = 0; i < stars.length; i++){
         if (stars[i].z != 0)
@@ -88,7 +94,4 @@ function draw(){
 
         rect(stars[i].x + center.x, stars[i].y + center.y, stars[i].width/scale, stars[i].height/scale);
     }
-    
-    console.log('hello');
-    
 }
