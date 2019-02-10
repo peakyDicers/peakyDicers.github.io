@@ -2,67 +2,15 @@
 <html>
 
 <head>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" type="text/css" href="main.css?v=2">
-	<!-- <script src="type.js"></script>  -->
-	<!-- // <script> typeWriter(); </script> -->
-	<META HTTP-EQUIV="refresh" CONTENT="5000">
+    <meta charset="utf-8" />
+    <title>peakyDicers</title>
+    <link rel="stylesheet" type="text/css" href="./simple.css">
 </head>
 
-<body style="background-color:black;">
-
-		<audio id="audio" autoplay loop>
-				<source src="song.mp3" type="audio/mp3">
-			  </audio> 
-
-	<div class="mainBlock">
-
-	</div>
-	<div class="center">
-		<p align="center" id="what"></p>
-		<p align="center" id="b"></p>
-		<div>
-
-		</div>
-		<script>
-			var i = -1;
-			var j = 0;
-			var txt = 'What is this?'; /* The text */
-			var txt2 = "It's beautiful.";
-			var speed = 40; /* The speed/duration of the effect in milliseconds */
-
-			function typeWriter() {
-				if (i == -1){
-					setTimeout(typeWriter, 3000)
-					i++
-					return;
-				}
-				if (i < txt.length) {
-					document.getElementById("what").innerHTML += txt.charAt(i);
-					if (i == txt.length - 1) {
-						setTimeout(typeWriter, 4300);
-						i++;
-						return;
-					} else {
-						setTimeout(typeWriter, speed);
-					}
-					i++;
-				}
-				if (i >= txt.length) {
-					if (j < txt2.length) {
-						document.getElementById("b").innerHTML += txt2.charAt(j);
-						j++;
-						setTimeout(typeWriter, speed);
-					}
-				}
-			}
-
-			var audio = document.getElementById("audio");
-  			audio.volume = 0.4;
-			window.onload = typeWriter;
-		</script>
+<body>
+    bonjour madammozelle, est-ce que tu per boit de l'eau??
+    <br/>
+    <img src="./meme.png" alt="meme">
 </body>
-
-
 
 </html>
